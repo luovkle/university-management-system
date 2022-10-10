@@ -9,6 +9,8 @@ python-multipart = "*"
 email-validator = "*"
 uvicorn = {extras = ["standard"], version = "*"}
 sqlmodel = "*"
+python-jose = {extras = ["cryptography"], version = "*"}
+passlib = {extras = ["bcrypt"], version = "*"}
 
 [dev-packages]
 pytest = "*"
