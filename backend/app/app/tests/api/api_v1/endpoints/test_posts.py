@@ -63,7 +63,6 @@ def test_update_post(session: Session, client: TestClient):
     del new_data["user_id"]
     response = client.put(f"{posts_path}/{post.id}", json=new_data)
     data = response.json()
-    print(data)
     assert response.status_code == 200
     assert data["title"] == post.title
     assert data["summary"] == post.summary

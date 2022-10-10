@@ -70,7 +70,6 @@ def test_update_user(session: Session, client: TestClient):
     new_data = {"username": "new_username"}
     response = client.put(f"{users_path}/{user.id}", json=new_data)
     data = response.json()
-    print(response.json())
     assert response.status_code == 200
     assert data["id"] == user.id
     assert data["username"] == new_data["username"]
