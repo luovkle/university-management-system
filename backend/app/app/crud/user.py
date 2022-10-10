@@ -2,7 +2,7 @@ from fastapi import HTTPException, status
 from sqlmodel import Session, select
 
 from app.models import User, UserCreate, UserUpdate
-from app.core.security import get_password_hash
+from app.core.security import get_password_hash, verify_password
 
 
 class CRUDUser:
@@ -69,6 +69,18 @@ class CRUDUser:
         session.delete(db_user)
         session.commit()
         return {"msg": "ok"}
+
+    def authenticate(self, session: Session, username: str, password: str):
+        db_user = self.get_by_username(session, username)
+        if not db_user:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+            )
+        if not verify_password(password, db_user.hashed_password):
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+            )
+        return db_user
 
 
 crud_user = CRUDUser()
