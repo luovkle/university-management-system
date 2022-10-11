@@ -3,6 +3,7 @@ from sqlmodel import Session
 
 from app.models import User
 from app.tests.utils import get_user, get_user_json, users_path
+from app.core.security import create_access_token
 
 
 def test_create_user(client: TestClient):
@@ -36,7 +37,9 @@ def test_read_user(client: TestClient, session: Session):
     user = get_user()
     session.add(user)
     session.commit()
-    response = client.get(f"{users_path}/1")
+    access_token = create_access_token(user.username)
+    headers = {"Authorization": f"Bearer {access_token}"}
+    response = client.get(f"{users_path}/me", headers=headers)
     data = response.json()
     assert response.status_code == 200
     assert data["username"] == user.username
@@ -51,7 +54,9 @@ def test_read_users(client: TestClient, session: Session):
     user2 = get_user()
     session.add_all((user1, user2))
     session.commit()
-    response = client.get(users_path)
+    access_token = create_access_token(user1.username)
+    headers = {"Authorization": f"Bearer {access_token}"}
+    response = client.get(users_path, headers=headers)
     data = response.json()
     assert data[0]["username"] == user1.username
     assert data[0]["first_name"] == user1.first_name
@@ -67,8 +72,10 @@ def test_update_user(session: Session, client: TestClient):
     user = get_user()
     session.add(user)
     session.commit()
+    access_token = create_access_token(user.username)
+    headers = {"Authorization": f"Bearer {access_token}"}
     new_data = {"username": "new_username"}
-    response = client.put(f"{users_path}/{user.id}", json=new_data)
+    response = client.put(f"{users_path}/me", json=new_data, headers=headers)
     data = response.json()
     assert response.status_code == 200
     assert data["id"] == user.id
@@ -84,7 +91,9 @@ def test_delete_user(session: Session, client: TestClient):
     user = get_user()
     session.add(user)
     session.commit()
-    response = client.delete(f"{users_path}/{user.id}")
+    access_token = create_access_token(user.username)
+    headers = {"Authorization": f"Bearer {access_token}"}
+    response = client.delete(f"{users_path}/me", headers=headers)
     data = response.json()
     db_user = session.get(User, user.id)
     assert response.status_code == 200
