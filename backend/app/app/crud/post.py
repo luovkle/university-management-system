@@ -48,5 +48,15 @@ class CRUDPost:
         session.refresh(db_post)
         return db_post
 
+    def delete(self, session: Session, id: int):
+        db_post = session.get(Post, id)
+        if not db_post:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="Post not found"
+            )
+        session.delete(db_post)
+        session.commit()
+        return {"msg": "ok"}
+
 
 crud_post = CRUDPost()
