@@ -7,6 +7,7 @@ from app.tests.utils import (
     comments_path,
     get_random_string,
 )
+from app.models import Comment
 
 
 def test_create_comment(client: TestClient):
@@ -71,3 +72,17 @@ def test_update_comment(session: Session, client: TestClient):
     assert data["user_id"] == comment.user_id
     assert data["post_id"] == comment.post_id
     assert data["id"] == comment.id
+
+
+def test_delete_comment(session: Session, client: TestClient):
+    user_id = 1
+    post_id = 1
+    comment = get_comment(user_id, post_id)
+    session.add(comment)
+    session.commit()
+    response = client.delete(f"{comments_path}/{comment.id}")
+    data = response.json()
+    db_comment = session.get(Comment, comment.id)
+    assert response.status_code == 200
+    assert data == {"msg": "ok"}
+    assert db_comment is None

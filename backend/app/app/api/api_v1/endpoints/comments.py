@@ -38,3 +38,9 @@ def update_comment(
 ):
     db_comment = crud_comment.update(session, comment, id)
     return db_comment
+
+
+@router.delete("/{id}")
+def delete_comment(*, session: Session = Depends(get_session), id: int):
+    msg = crud_comment.delete(session, id)
+    return msg
