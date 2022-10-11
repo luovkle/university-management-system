@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Query
 from sqlmodel import Session
 
 from app.api.deps import get_session
-from app.models import CommentCreate, CommentRead, CommentReadWithPost
+from app.models import CommentCreate, CommentRead, CommentReadWithPost, CommentUpdate
 from app.utils import Tag, Prefix
 from app.crud.comment import crud_comment
 
@@ -29,4 +29,12 @@ def read_comments(
 @router.get("/{id}", response_model=CommentReadWithPost)
 def read_comment(*, session: Session = Depends(get_session), id: int):
     db_comment = crud_comment.read_single(session, id)
+    return db_comment
+
+
+@router.put("/{id}", response_model=CommentRead)
+def update_comment(
+    *, session: Session = Depends(get_session), comment: CommentUpdate, id: int
+):
+    db_comment = crud_comment.update(session, comment, id)
     return db_comment

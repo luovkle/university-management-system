@@ -1,7 +1,12 @@
 from fastapi.testclient import TestClient
 from sqlmodel import Session
 
-from app.tests.utils import get_comment, get_comment_json, comments_path
+from app.tests.utils import (
+    get_comment,
+    get_comment_json,
+    comments_path,
+    get_random_string,
+)
 
 
 def test_create_comment(client: TestClient):
@@ -50,3 +55,19 @@ def test_read_comments(session: Session, client: TestClient):
     assert data[1]["user_id"] == comment2.user_id
     assert data[1]["post_id"] == comment2.post_id
     assert data[1]["id"] == comment2.id
+
+
+def test_update_comment(session: Session, client: TestClient):
+    user_id = 1
+    post_id = 1
+    comment = get_comment(user_id, post_id)
+    session.add(comment)
+    session.commit()
+    new_data = {"content": get_random_string(5)}
+    response = client.put(f"{comments_path}/{comment.id}", json=new_data)
+    data = response.json()
+    assert response.status_code == 200
+    assert data["content"] == new_data["content"]
+    assert data["user_id"] == comment.user_id
+    assert data["post_id"] == comment.post_id
+    assert data["id"] == comment.id
