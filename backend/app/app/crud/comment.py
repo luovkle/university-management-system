@@ -1,7 +1,7 @@
 from fastapi import HTTPException
 from sqlmodel import Session, select
 
-from app.models import Comment, CommentCreate
+from app.models import Comment, CommentCreate, CommentUpdate
 
 
 class CRUDComment:
@@ -20,6 +20,18 @@ class CRUDComment:
         db_comment = session.get(Comment, id)
         if not db_comment:
             raise HTTPException(status_code=404, detail="Comment not found")
+        return db_comment
+
+    def update(self, session: Session, comment: CommentUpdate, id: int):
+        db_comment = session.get(Comment, id)
+        if not db_comment:
+            raise HTTPException(status_code=404, detail="Comment not found")
+        comment_data = comment.dict(exclude_unset=True)
+        for key, value in comment_data.items():
+            setattr(db_comment, key, value)
+        session.add(db_comment)
+        session.commit()
+        session.refresh(db_comment)
         return db_comment
 
 
