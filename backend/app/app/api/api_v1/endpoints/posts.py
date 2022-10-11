@@ -36,3 +36,9 @@ def read_post(*, session: Session = Depends(get_session), id: int):
 def update_post(*, session: Session = Depends(get_session), post: PostUpdate, id: int):
     db_post = crud_post.update(session, post, id)
     return db_post
+
+
+@router.delete("/{id}")
+def delete_post(*, session: Session = Depends(get_session), id: int):
+    msg = crud_post.delete(session, id)
+    return msg

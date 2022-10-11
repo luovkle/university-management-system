@@ -2,6 +2,7 @@ from fastapi.testclient import TestClient
 from sqlmodel import Session
 
 from app.tests.utils import get_post, get_post_json, posts_path
+from app.models import Post
 
 
 def test_create_post(client: TestClient):
@@ -68,3 +69,16 @@ def test_update_post(session: Session, client: TestClient):
     assert data["summary"] == post.summary
     assert data["content"] == post.content
     assert data["user_id"] == post.user_id
+
+
+def test_delete_post(session: Session, client: TestClient):
+    user_id = 1
+    post = get_post(user_id)
+    session.add(post)
+    session.commit()
+    response = client.delete(f"{posts_path}/{post.id}")
+    data = response.json()
+    db_post = session.get(Post, post.id)
+    assert response.status_code == 200
+    assert data == {"msg": "ok"}
+    assert db_post is None
