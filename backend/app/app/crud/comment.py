@@ -34,5 +34,13 @@ class CRUDComment:
         session.refresh(db_comment)
         return db_comment
 
+    def delete(self, session: Session, id: int):
+        db_comment = session.get(Comment, id)
+        if not db_comment:
+            raise HTTPException(status_code=404, detail="Comment not found")
+        session.delete(db_comment)
+        session.commit()
+        return {"msg": "ok"}
+
 
 crud_comment = CRUDComment()
