@@ -1,4 +1,5 @@
 from fastapi import HTTPException, status
+from sqlalchemy.sql import and_
 from sqlmodel import Session, select
 
 from app.models import Post, PostCreate, PostUpdate
@@ -9,12 +10,12 @@ class CRUDPost:
         db_post = session.exec(select(Post).where(Post.title == title)).first()
         return db_post
 
-    def create(self, session: Session, post: PostCreate):
+    def create(self, session: Session, post: PostCreate, user_id: int):
         if self.get_by_title(session, post.title):
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST, detail="Title not available"
             )
-        db_post = Post.from_orm(post)
+        db_post = Post(**post.dict(), user_id=user_id)
         session.add(db_post)
         session.commit()
         session.refresh(db_post)
@@ -30,12 +31,14 @@ class CRUDPost:
             raise HTTPException(status_code=404, detail="Post not found")
         return db_post
 
-    def update(self, session: Session, post: PostUpdate, id: int):
+    def update(self, session: Session, post: PostUpdate, id: int, user_id: int):
         if post.title and self.get_by_title(session, post.title):
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST, detail="Title not available"
             )
-        db_post = session.get(Post, id)
+        db_post = session.exec(
+            select(Post).where(Post.id == id, Post.user_id == user_id)
+        ).first()
         if not db_post:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="Post not found"
@@ -48,8 +51,10 @@ class CRUDPost:
         session.refresh(db_post)
         return db_post
 
-    def delete(self, session: Session, id: int):
-        db_post = session.get(Post, id)
+    def delete(self, session: Session, id: int, user_id: int):
+        db_post = session.exec(
+            select(Post).where(Post.id == id, Post.user_id == user_id)
+        ).first()
         if not db_post:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="Post not found"

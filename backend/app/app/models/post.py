@@ -27,25 +27,27 @@ class PostBase(SQLModel):
         max_length=settings.POST_CONTENT_MAX_LENGTH,
     )
 
-    user_id: int | None = Field(default=None, foreign_key="user.id")
-
 
 class Post(PostBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
+    user_id: int | None = Field(default=None, foreign_key="user.id")
 
     user: Optional["User"] = Relationship(back_populates="posts")
     comments: list["Comment"] = Relationship(back_populates="post")
 
 
 class PostCreate(PostBase):
-    user_id: int
+    ...
 
 
 class PostRead(PostBase):
     id: int
+    user_id: int
 
 
 class PostReadWithComments(PostRead):
+    id: int
+    user_id: int
     comments: list["CommentRead"] = []
 
 

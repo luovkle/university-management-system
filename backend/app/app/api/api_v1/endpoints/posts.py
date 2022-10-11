@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, Query
 from sqlmodel import Session
 
-from app.api.deps import get_session
-from app.models import PostCreate, PostRead, PostReadWithComments, PostUpdate
+from app.api.deps import get_session, get_current_user
+from app.models import PostCreate, PostRead, PostReadWithComments, PostUpdate, User
 from app.utils import Tag, Prefix
 from app.crud.post import crud_post
 
@@ -10,8 +10,14 @@ router = APIRouter(prefix=Prefix.posts, tags=[Tag.posts])
 
 
 @router.post("", response_model=PostRead, status_code=201)
-def create_post(*, session: Session = Depends(get_session), post: PostCreate):
-    db_post = crud_post.create(session, post)
+def create_post(
+    *,
+    current_user: User = Depends(get_current_user),
+    session: Session = Depends(get_session),
+    post: PostCreate,
+):
+    user_id = current_user.id or 0
+    db_post = crud_post.create(session, post, user_id)
     return db_post
 
 
@@ -33,12 +39,25 @@ def read_post(*, session: Session = Depends(get_session), id: int):
 
 
 @router.put("/{id}", response_model=PostRead)
-def update_post(*, session: Session = Depends(get_session), post: PostUpdate, id: int):
-    db_post = crud_post.update(session, post, id)
+def update_post(
+    *,
+    current_user: User = Depends(get_current_user),
+    session: Session = Depends(get_session),
+    post: PostUpdate,
+    id: int,
+):
+    user_id = current_user.id or 0
+    db_post = crud_post.update(session, post, id, user_id)
     return db_post
 
 
 @router.delete("/{id}")
-def delete_post(*, session: Session = Depends(get_session), id: int):
-    msg = crud_post.delete(session, id)
+def delete_post(
+    *,
+    current_user: User = Depends(get_current_user),
+    session: Session = Depends(get_session),
+    id: int,
+):
+    user_id = current_user.id or 0
+    msg = crud_post.delete(session, id, user_id)
     return msg
