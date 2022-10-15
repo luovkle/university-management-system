@@ -1,3 +1,3 @@
-from sqlmodel import SQLModel
+from sqlmodel import SQLModel  # noqa: F401
 
-from app.models import User, Post, Comment
+from app.models import User, Post, Comment  # noqa: F401
