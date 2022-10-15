@@ -1,12 +1,12 @@
+import random
+import string
+
 from app.models import User, Post, Comment
 from app.core.config import settings
 
 users_path = f"{settings.API_V1_STR}/users"
 posts_path = f"{settings.API_V1_STR}/posts"
 comments_path = f"{settings.API_V1_STR}/comments"
-
-import random
-import string
 
 
 def get_random_string(length: int) -> str:
