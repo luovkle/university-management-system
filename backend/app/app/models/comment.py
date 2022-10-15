@@ -14,7 +14,6 @@ class CommentBase(SQLModel):
         min_length=settings.COMMENT_MIN_LENGTH,
         max_length=settings.COMMENT_MAX_LENGTH,
     )
-    user_id: int
     post_id: int
 
 
@@ -33,6 +32,7 @@ class CommentCreate(CommentBase):
 
 class CommentRead(CommentBase):
     id: int
+    user_id: int
 
 
 class CommentReadWithPost(CommentRead):

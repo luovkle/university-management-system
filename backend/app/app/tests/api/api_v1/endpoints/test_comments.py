@@ -1,20 +1,29 @@
 from fastapi.testclient import TestClient
 from sqlmodel import Session
 
+from app.core.security import create_access_token
 from app.tests.utils import (
     get_comment,
     get_comment_json,
     comments_path,
     get_random_string,
+    get_user,
+    get_post,
 )
 from app.models import Comment
 
 
-def test_create_comment(client: TestClient):
-    user_id = 1
-    post_id = 1
-    json = get_comment_json(user_id, post_id)
-    response = client.post(comments_path, json=json)
+def test_create_comment(session: Session, client: TestClient):
+    user = get_user()
+    session.add(user)
+    session.commit()
+    access_token = create_access_token(user.username)
+    headers = {"Authorization": f"Bearer {access_token}"}
+    post = get_post(user.id or 0)
+    session.add(post)
+    session.commit()
+    json = get_comment_json(user.id or 0, post.id or 0)
+    response = client.post(comments_path, json=json, headers=headers)
     data = response.json()
     assert response.status_code == 201
     assert data["content"] == json["content"]
@@ -59,13 +68,21 @@ def test_read_comments(session: Session, client: TestClient):
 
 
 def test_update_comment(session: Session, client: TestClient):
-    user_id = 1
-    post_id = 1
-    comment = get_comment(user_id, post_id)
+    user = get_user()
+    session.add(user)
+    session.commit()
+    access_token = create_access_token(user.username)
+    headers = {"Authorization": f"Bearer {access_token}"}
+    post = get_post(user.id or 0)
+    session.add(post)
+    session.commit()
+    comment = get_comment(user.id or 0, post.id or 0)
     session.add(comment)
     session.commit()
     new_data = {"content": get_random_string(5)}
-    response = client.put(f"{comments_path}/{comment.id}", json=new_data)
+    response = client.put(
+        f"{comments_path}/{comment.id}", json=new_data, headers=headers
+    )
     data = response.json()
     assert response.status_code == 200
     assert data["content"] == new_data["content"]
@@ -75,12 +92,18 @@ def test_update_comment(session: Session, client: TestClient):
 
 
 def test_delete_comment(session: Session, client: TestClient):
-    user_id = 1
-    post_id = 1
-    comment = get_comment(user_id, post_id)
+    user = get_user()
+    session.add(user)
+    session.commit()
+    access_token = create_access_token(user.username)
+    headers = {"Authorization": f"Bearer {access_token}"}
+    post = get_post(user.id or 0)
+    session.add(post)
+    session.commit()
+    comment = get_comment(user.id or 0, post.id or 0)
     session.add(comment)
     session.commit()
-    response = client.delete(f"{comments_path}/{comment.id}")
+    response = client.delete(f"{comments_path}/{comment.id}", headers=headers)
     data = response.json()
     db_comment = session.get(Comment, comment.id)
     assert response.status_code == 200

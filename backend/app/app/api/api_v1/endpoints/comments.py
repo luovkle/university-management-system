@@ -1,8 +1,14 @@
 from fastapi import APIRouter, Depends, Query
 from sqlmodel import Session
 
-from app.api.deps import get_session
-from app.models import CommentCreate, CommentRead, CommentReadWithPost, CommentUpdate
+from app.api.deps import get_session, get_current_user
+from app.models import (
+    CommentCreate,
+    CommentRead,
+    CommentReadWithPost,
+    CommentUpdate,
+    User,
+)
 from app.utils import Tag, Prefix
 from app.crud.comment import crud_comment
 
@@ -10,8 +16,14 @@ router = APIRouter(prefix=Prefix.comments, tags=[Tag.comments])
 
 
 @router.post("", response_model=CommentRead, status_code=201)
-def create_comment(*, session: Session = Depends(get_session), comment: CommentCreate):
-    db_comment = crud_comment.create(session, comment)
+def create_comment(
+    *,
+    current_user: User = Depends(get_current_user),
+    session: Session = Depends(get_session),
+    comment: CommentCreate,
+):
+    user_id = current_user.id or 0
+    db_comment = crud_comment.create(session, comment, user_id=user_id)
     return db_comment
 
 
@@ -34,13 +46,24 @@ def read_comment(*, session: Session = Depends(get_session), id: int):
 
 @router.put("/{id}", response_model=CommentRead)
 def update_comment(
-    *, session: Session = Depends(get_session), comment: CommentUpdate, id: int
+    *,
+    current_user: User = Depends(get_current_user),
+    session: Session = Depends(get_session),
+    comment: CommentUpdate,
+    id: int,
 ):
-    db_comment = crud_comment.update(session, comment, id)
+    user_id = current_user.id or 0
+    db_comment = crud_comment.update(session, comment, id, user_id=user_id)
     return db_comment
 
 
 @router.delete("/{id}")
-def delete_comment(*, session: Session = Depends(get_session), id: int):
-    msg = crud_comment.delete(session, id)
+def delete_comment(
+    *,
+    current_user: User = Depends(get_current_user),
+    session: Session = Depends(get_session),
+    id: int,
+):
+    user_id = current_user.id or 0
+    msg = crud_comment.delete(session, id, user_id=user_id)
     return msg
