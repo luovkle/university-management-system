@@ -15,6 +15,11 @@ passlib = {extras = ["bcrypt"], version = "*"}
 [dev-packages]
 pytest = "*"
 requests = "*"
+mypy = "*"
+black = "*"
+isort = "*"
+autoflake = "*"
+flake8 = "*"
 
 [requires]
 python_version = "3.10"
