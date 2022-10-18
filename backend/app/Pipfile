@@ -11,6 +11,7 @@ uvicorn = {extras = ["standard"], version = "*"}
 sqlmodel = "*"
 python-jose = {extras = ["cryptography"], version = "*"}
 passlib = {extras = ["bcrypt"], version = "*"}
+alembic = "*"
 
 [dev-packages]
 pytest = "*"
