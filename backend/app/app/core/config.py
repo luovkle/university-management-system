@@ -5,6 +5,11 @@ from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
+    # App
+    APP_TITLE: str = "University Management System"
+    APP_LICENSE_NAME: str = "MIT"
+    APP_LICENSE_URL: str = "https://opensource.org/licenses/MIT"
+
     # Api
     API_V1_STR: str = "/api/v1"
 
