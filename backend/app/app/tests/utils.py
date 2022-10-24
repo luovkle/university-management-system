@@ -1,8 +1,8 @@
 import random
 import string
 
-from app.models import User, Post, Comment
 from app.core.config import settings
+from app.models import Comment, Post, User
 
 users_path = f"{settings.API_V1_STR}/users"
 posts_path = f"{settings.API_V1_STR}/posts"

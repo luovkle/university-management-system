@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, Optional
 
-from sqlmodel import SQLModel, Field, Relationship
+from sqlmodel import Field, Relationship, SQLModel
 
 from app.core.config import settings
 

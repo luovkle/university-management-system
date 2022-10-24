@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, Query
 from sqlmodel import Session
 
-from app.api.deps import get_session, get_current_user
-from app.models import PostCreate, PostRead, PostReadWithComments, PostUpdate, User
-from app.utils import Tag, Prefix
+from app.api.deps import get_current_user, get_session
 from app.crud.post import crud_post
+from app.models import PostCreate, PostRead, PostReadWithComments, PostUpdate, User
+from app.utils import Prefix, Tag
 
 router = APIRouter(prefix=Prefix.posts, tags=[Tag.posts])
 

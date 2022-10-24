@@ -1,9 +1,9 @@
 from fastapi.testclient import TestClient
 from sqlmodel import Session
 
+from app.core.security import create_access_token
 from app.models import User
 from app.tests.utils import get_user, get_user_json, users_path
-from app.core.security import create_access_token
 
 
 def test_create_user(client: TestClient):

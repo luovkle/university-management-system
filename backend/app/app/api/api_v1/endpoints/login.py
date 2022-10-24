@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlmodel import Session
-from app.api.deps import get_session
 
-from app.utils import Prefix, Tag
-from app.crud.user import crud_user
+from app.api.deps import get_session
 from app.core.security import create_access_token
+from app.crud.user import crud_user
 from app.models.token import AccessTokenRead
+from app.utils import Prefix, Tag
 
 router = APIRouter(prefix=Prefix.login, tags=[Tag.login])
 

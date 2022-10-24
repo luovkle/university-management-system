@@ -4,10 +4,9 @@ from jose import JWTError, jwt
 from sqlmodel import Session
 
 from app.core.config import settings
-from app.utils import Tag
-from app.db.engine import engine
-from app.utils import CustomHttpExceptions
 from app.crud.user import crud_user
+from app.db.engine import engine
+from app.utils import CustomHttpExceptions, Tag
 
 oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl=f"{settings.API_V1_STR}/{Tag.login}/access-token"

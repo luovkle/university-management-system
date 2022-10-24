@@ -1,8 +1,8 @@
 from fastapi import HTTPException, status
 from sqlmodel import Session, select
 
-from app.models import User, UserCreate, UserUpdate
 from app.core.security import get_password_hash, verify_password
+from app.models import User, UserCreate, UserUpdate
 
 
 class CRUDUser:

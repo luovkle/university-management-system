@@ -1,5 +1,4 @@
 from fastapi import HTTPException, status
-from sqlalchemy.sql import and_
 from sqlmodel import Session, select
 
 from app.models import Post, PostCreate, PostUpdate

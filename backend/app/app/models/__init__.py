@@ -1,17 +1,3 @@
-from .user import (
-    User,
-    UserCreate,
-    UserRead,
-    UserReadWithPosts,
-    UserUpdate,
-)
-from .post import (
-    Post,
-    PostCreate,
-    PostRead,
-    PostReadWithComments,
-    PostUpdate,
-)
 from .comment import (
     Comment,
     CommentCreate,
@@ -19,6 +5,8 @@ from .comment import (
     CommentReadWithPost,
     CommentUpdate,
 )
+from .post import Post, PostCreate, PostRead, PostReadWithComments, PostUpdate
+from .user import User, UserCreate, UserRead, UserReadWithPosts, UserUpdate
 
 UserReadWithPosts.update_forward_refs(PostRead=PostRead)
 PostReadWithComments.update_forward_refs(CommentRead=CommentRead)

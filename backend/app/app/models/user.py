@@ -1,13 +1,13 @@
 from typing import TYPE_CHECKING
 
 from pydantic import EmailStr
-from sqlmodel import SQLModel, Field, Relationship
+from sqlmodel import Field, Relationship, SQLModel
 
 from app.core.config import settings
 
 if TYPE_CHECKING:
-    from .post import Post, PostRead
     from .comment import Comment
+    from .post import Post, PostRead
 
 
 class UserBase(SQLModel):

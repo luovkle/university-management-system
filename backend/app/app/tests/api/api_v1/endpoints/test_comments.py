@@ -2,15 +2,15 @@ from fastapi.testclient import TestClient
 from sqlmodel import Session
 
 from app.core.security import create_access_token
+from app.models import Comment
 from app.tests.utils import (
+    comments_path,
     get_comment,
     get_comment_json,
-    comments_path,
+    get_post,
     get_random_string,
     get_user,
-    get_post,
 )
-from app.models import Comment
 
 
 def test_create_comment(session: Session, client: TestClient):

@@ -1,9 +1,9 @@
 from fastapi.testclient import TestClient
 from sqlmodel import Session
 
-from app.tests.utils import get_post, get_post_json, get_user, posts_path
-from app.models import Post
 from app.core.security import create_access_token
+from app.models import Post
+from app.tests.utils import get_post, get_post_json, get_user, posts_path
 
 
 def test_create_post(session: Session, client: TestClient):
