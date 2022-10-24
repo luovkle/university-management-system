@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ./backend
+      dockerfile: app.dockerfile
+    command: >
+      bash -c "alembic upgrade head &&
+      uvicorn app.main:app --host 0.0.0.0"
+    restart: always
+    ports:
+      - 8000:8000
