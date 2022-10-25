@@ -8,6 +8,7 @@ class Tag(str, Enum):
     users = "users"
     posts = "posts"
     comments = "comments"
+    profiles = "profiles"
 
 
 class Prefix(str, Enum):
@@ -15,6 +16,7 @@ class Prefix(str, Enum):
     users = "/users"
     posts = "/posts"
     comments = "/comments"
+    profiles = "/profiles"
 
 
 class CustomHttpExceptions:
