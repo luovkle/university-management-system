@@ -3,7 +3,7 @@ from sqlmodel import Session
 
 from app.api.deps import get_current_user, get_session
 from app.crud.user import crud_user
-from app.models import User, UserCreate, UserRead, UserReadWithPosts, UserUpdate
+from app.models import User, UserCreate, UserRead, UserReadWithProfile, UserUpdate
 from app.utils import Prefix, Tag
 
 router = APIRouter(prefix=Prefix.users, tags=[Tag.users])
@@ -27,7 +27,7 @@ def read_users(
     return db_users
 
 
-@router.get("/me", response_model=UserReadWithPosts)
+@router.get("/me", response_model=UserReadWithProfile)
 def read_user(current_user: User = Depends(get_current_user)):
     return current_user
 

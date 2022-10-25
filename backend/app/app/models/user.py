@@ -7,7 +7,7 @@ from app.core.config import settings
 
 if TYPE_CHECKING:
     from .comment import Comment
-    from .post import Post, PostRead
+    from .post import Post
     from .profile import Profile, ProfileRead
 
 
@@ -49,10 +49,6 @@ class UserCreate(UserBase):
 
 class UserRead(UserBase):
     id: int
-
-
-class UserReadWithPosts(UserRead):
-    posts: list["PostRead"] = []
 
 
 class UserReadWithProfile(UserRead):
