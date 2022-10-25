@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 from pydantic import EmailStr
 from sqlmodel import Field, Relationship, SQLModel
@@ -8,6 +8,7 @@ from app.core.config import settings
 if TYPE_CHECKING:
     from .comment import Comment
     from .post import Post, PostRead
+    from .profile import Profile, ProfileRead
 
 
 class UserBase(SQLModel):
@@ -34,6 +35,9 @@ class User(UserBase, table=True):
 
     posts: list["Post"] = Relationship(back_populates="user")
     comments: list["Comment"] = Relationship(back_populates="user")
+    profile: Optional["Profile"] = Relationship(
+        back_populates="user", sa_relationship_kwargs={"uselist": False}
+    )
 
 
 class UserCreate(UserBase):
@@ -49,6 +53,10 @@ class UserRead(UserBase):
 
 class UserReadWithPosts(UserRead):
     posts: list["PostRead"] = []
+
+
+class UserReadWithProfile(UserRead):
+    profile: Optional["ProfileRead"] = None
 
 
 class UserUpdate(SQLModel):

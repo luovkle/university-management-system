@@ -2,7 +2,7 @@ from fastapi import HTTPException, status
 from sqlmodel import Session, select
 
 from app.core.security import get_password_hash, verify_password
-from app.models import User, UserCreate, UserUpdate
+from app.models import User, UserCreate, UserUpdate, Profile
 
 
 class CRUDUser:
@@ -25,6 +25,11 @@ class CRUDUser:
             )
         hashed_password = get_password_hash(user.password)
         db_user = User(**user.dict(), hashed_password=hashed_password)
+
+        # Create profile
+        db_profile = Profile(username=db_user.username)
+        db_user.profile = db_profile
+
         session.add(db_user)
         session.commit()
         session.refresh(db_user)
