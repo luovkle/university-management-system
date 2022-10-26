@@ -2,11 +2,12 @@ import random
 import string
 
 from app.core.config import settings
-from app.models import Comment, Post, User
+from app.models import Comment, Post, User, Profile
 
 users_path = f"{settings.API_V1_STR}/users"
 posts_path = f"{settings.API_V1_STR}/posts"
 comments_path = f"{settings.API_V1_STR}/comments"
+profiles_path = f"{settings.API_V1_STR}/profiles"
 
 
 def get_random_string(length: int) -> str:
@@ -78,3 +79,9 @@ def get_comment(user_id: int, post_id: int):
     json = get_comment_json(user_id, post_id)
     comment = Comment(**json)
     return comment
+
+
+def get_profile() -> Profile:
+    user = get_user()
+    profile = Profile(username=user.username, user=user)
+    return profile
