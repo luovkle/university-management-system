@@ -9,12 +9,12 @@ class CRUDPost:
         db_post = session.exec(select(Post).where(Post.title == title)).first()
         return db_post
 
-    def create(self, session: Session, post: PostCreate, user_id: int):
+    def create(self, session: Session, post: PostCreate, profile_id: int):
         if self.get_by_title(session, post.title):
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST, detail="Title not available"
             )
-        db_post = Post(**post.dict(), user_id=user_id)
+        db_post = Post(**post.dict(), profile_id=profile_id)
         session.add(db_post)
         session.commit()
         session.refresh(db_post)
@@ -30,13 +30,13 @@ class CRUDPost:
             raise HTTPException(status_code=404, detail="Post not found")
         return db_post
 
-    def update(self, session: Session, post: PostUpdate, id: int, user_id: int):
+    def update(self, session: Session, post: PostUpdate, id: int, profile_id: int):
         if post.title and self.get_by_title(session, post.title):
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST, detail="Title not available"
             )
         db_post = session.exec(
-            select(Post).where(Post.id == id, Post.user_id == user_id)
+            select(Post).where(Post.id == id, Post.profile_id == profile_id)
         ).first()
         if not db_post:
             raise HTTPException(
@@ -50,9 +50,9 @@ class CRUDPost:
         session.refresh(db_post)
         return db_post
 
-    def delete(self, session: Session, id: int, user_id: int):
+    def delete(self, session: Session, id: int, profile_id: int):
         db_post = session.exec(
-            select(Post).where(Post.id == id, Post.user_id == user_id)
+            select(Post).where(Post.id == id, Post.profile_id == profile_id)
         ).first()
         if not db_post:
             raise HTTPException(

@@ -16,8 +16,8 @@ def create_post(
     session: Session = Depends(get_session),
     post: PostCreate,
 ):
-    user_id = current_user.id or 0
-    db_post = crud_post.create(session, post, user_id)
+    profile_id = current_user.profile.id or 0
+    db_post = crud_post.create(session, post, profile_id)
     return db_post
 
 
@@ -46,8 +46,8 @@ def update_post(
     post: PostUpdate,
     id: int,
 ):
-    user_id = current_user.id or 0
-    db_post = crud_post.update(session, post, id, user_id)
+    profile_id = current_user.profile.id or 0
+    db_post = crud_post.update(session, post, id, profile_id)
     return db_post
 
 
@@ -58,6 +58,6 @@ def delete_post(
     session: Session = Depends(get_session),
     id: int,
 ):
-    user_id = current_user.id or 0
-    msg = crud_post.delete(session, id, user_id)
+    profile_id = current_user.profile.id or 0
+    msg = crud_post.delete(session, id, profile_id)
     return msg

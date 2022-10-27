@@ -13,8 +13,9 @@ from .user import (
     UserReadWithProfile,
     UserUpdate,
 )
-from .profile import Profile, ProfileRead, ProfileUpdate
+from .profile import Profile, ProfileRead, ProfileReadWithPosts, ProfileUpdate
 
 UserReadWithProfile.update_forward_refs(ProfileRead=ProfileRead)
+ProfileReadWithPosts.update_forward_refs(PostRead=PostRead)
 PostReadWithComments.update_forward_refs(CommentRead=CommentRead)
 CommentReadWithPost.update_forward_refs(PostRead=PostRead)

@@ -22,8 +22,8 @@ def create_comment(
     session: Session = Depends(get_session),
     comment: CommentCreate,
 ):
-    user_id = current_user.id or 0
-    db_comment = crud_comment.create(session, comment, user_id=user_id)
+    profile_id = current_user.profile.id or 0
+    db_comment = crud_comment.create(session, comment, profile_id)
     return db_comment
 
 
@@ -52,8 +52,8 @@ def update_comment(
     comment: CommentUpdate,
     id: int,
 ):
-    user_id = current_user.id or 0
-    db_comment = crud_comment.update(session, comment, id, user_id=user_id)
+    profile_id = current_user.profile.id or 0
+    db_comment = crud_comment.update(session, comment, id, profile_id)
     return db_comment
 
 
@@ -64,6 +64,6 @@ def delete_comment(
     session: Session = Depends(get_session),
     id: int,
 ):
-    user_id = current_user.id or 0
-    msg = crud_comment.delete(session, id, user_id=user_id)
+    profile_id = current_user.profile.id or 0
+    msg = crud_comment.delete(session, id, profile_id)
     return msg

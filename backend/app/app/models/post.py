@@ -6,7 +6,7 @@ from app.core.config import settings
 
 if TYPE_CHECKING:
     from .comment import Comment, CommentRead
-    from .user import User
+    from .profile import Profile
 
 
 class PostBase(SQLModel):
@@ -30,9 +30,9 @@ class PostBase(SQLModel):
 
 class Post(PostBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    user_id: int | None = Field(default=None, foreign_key="user.id")
+    profile_id: int | None = Field(default=None, foreign_key="profile.id")
 
-    user: Optional["User"] = Relationship(back_populates="posts")
+    profile: Optional["Profile"] = Relationship(back_populates="posts")
     comments: list["Comment"] = Relationship(back_populates="post")
 
 
@@ -42,12 +42,12 @@ class PostCreate(PostBase):
 
 class PostRead(PostBase):
     id: int
-    user_id: int
+    profile_id: int
 
 
 class PostReadWithComments(PostRead):
     id: int
-    user_id: int
+    profile_id: int
     comments: list["CommentRead"] = []
 
 

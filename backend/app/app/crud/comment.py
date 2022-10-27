@@ -5,12 +5,12 @@ from app.models import Comment, CommentCreate, CommentUpdate, Post
 
 
 class CRUDComment:
-    def create(self, session: Session, comment: CommentCreate, user_id: int):
+    def create(self, session: Session, comment: CommentCreate, profile_id: int):
         if not session.get(Post, comment.post_id):
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="Post not found"
             )
-        db_comment = Comment(**comment.dict(), user_id=user_id)
+        db_comment = Comment(**comment.dict(), profile_id=profile_id)
         session.add(db_comment)
         session.commit()
         session.refresh(db_comment)
@@ -26,9 +26,9 @@ class CRUDComment:
             raise HTTPException(status_code=404, detail="Comment not found")
         return db_comment
 
-    def update(self, session: Session, comment: CommentUpdate, id: int, user_id: int):
+    def update(self, session: Session, comment: CommentUpdate, id: int, profile_id: int):
         db_comment = session.exec(
-            select(Comment).where(Comment.id == id, Comment.user_id == user_id)
+            select(Comment).where(Comment.id == id, Comment.profile_id == profile_id)
         ).first()
         if not db_comment:
             raise HTTPException(status_code=404, detail="Comment not found")
@@ -40,9 +40,9 @@ class CRUDComment:
         session.refresh(db_comment)
         return db_comment
 
-    def delete(self, session: Session, id: int, user_id: int):
+    def delete(self, session: Session, id: int, profile_id: int):
         db_comment = session.exec(
-            select(Comment).where(Comment.id == id, Comment.user_id == user_id)
+            select(Comment).where(Comment.id == id, Comment.profile_id == profile_id)
         ).first()
         if not db_comment:
             raise HTTPException(status_code=404, detail="Comment not found")

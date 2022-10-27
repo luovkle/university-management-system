@@ -4,7 +4,7 @@ from app.api.deps import get_session
 
 from app.utils import Tag, Prefix
 from app.crud.profile import crud_profile
-from app.models import ProfileRead
+from app.models import ProfileRead, ProfileReadWithPosts
 
 router = APIRouter(prefix=Prefix.profiles, tags=[Tag.profiles])
 
@@ -20,7 +20,7 @@ def read_profiles(
     return db_profiles
 
 
-@router.get("/{id}", response_model=ProfileRead)
+@router.get("/{id}", response_model=ProfileReadWithPosts)
 def read_profile(*, session: Session = Depends(get_session), id: int):
     db_profile = crud_profile.read_single(session, id=id)
     return db_profile

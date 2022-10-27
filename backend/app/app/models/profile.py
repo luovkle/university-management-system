@@ -5,6 +5,8 @@ from app.core.config import settings
 
 if TYPE_CHECKING:
     from .user import User
+    from .post import Post, PostRead
+    from .comment import Comment
 
 
 class ProfileBase(SQLModel):
@@ -24,10 +26,16 @@ class Profile(ProfileBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
 
     user: Optional["User"] = Relationship(back_populates="profile")
+    posts: list["Post"] = Relationship(back_populates="profile")
+    comments: list["Comment"] = Relationship(back_populates="profile")
 
 
 class ProfileRead(ProfileBase):
     id: int
+
+
+class ProfileReadWithPosts(ProfileRead):
+    posts: list["PostRead"] = []
 
 
 class ProfileUpdate(SQLModel):

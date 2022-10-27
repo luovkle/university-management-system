@@ -46,7 +46,7 @@ def get_user() -> User:
 
 
 def get_post_json(
-    user_id: int,
+    profile_id: int,
     title_length: int = 5,
     summary_length: int = 5,
     content_length: int = 5,
@@ -55,33 +55,34 @@ def get_post_json(
         "title": get_random_string(title_length),
         "summary": get_random_string(summary_length),
         "content": get_random_string(content_length),
-        "user_id": user_id,
+        "profile_id": profile_id,
     }
     return json
 
 
-def get_post(user_id: int) -> Post:
-    json = get_post_json(user_id)
+def get_post(profile_id: int) -> Post:
+    json = get_post_json(profile_id)
     post = Post(**json)
     return post
 
 
-def get_comment_json(user_id: int, post_id: int, content_length: int = 5) -> dict:
+def get_comment_json(profile_id: int, post_id: int, content_length: int = 5) -> dict:
     json = {
-        "user_id": user_id,
+        "profile_id": profile_id,
         "post_id": post_id,
         "content": get_random_string(content_length),
     }
     return json
 
 
-def get_comment(user_id: int, post_id: int):
-    json = get_comment_json(user_id, post_id)
+def get_comment(profile_id: int, post_id: int):
+    json = get_comment_json(profile_id, post_id)
     comment = Comment(**json)
     return comment
 
 
-def get_profile() -> Profile:
-    user = get_user()
+def get_profile(user: User | None = None) -> Profile:
+    if not user:
+        user = get_user()
     profile = Profile(username=user.username, user=user)
     return profile

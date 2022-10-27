@@ -6,8 +6,6 @@ from sqlmodel import Field, Relationship, SQLModel
 from app.core.config import settings
 
 if TYPE_CHECKING:
-    from .comment import Comment
-    from .post import Post
     from .profile import Profile, ProfileRead
 
 
@@ -33,9 +31,7 @@ class User(UserBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     hashed_password: str
 
-    posts: list["Post"] = Relationship(back_populates="user")
-    comments: list["Comment"] = Relationship(back_populates="user")
-    profile: Optional["Profile"] = Relationship(
+    profile: "Profile" = Relationship(
         back_populates="user", sa_relationship_kwargs={"uselist": False}
     )
 
