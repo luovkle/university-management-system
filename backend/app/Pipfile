@@ -12,6 +12,7 @@ sqlmodel = "*"
 python-jose = {extras = ["cryptography"], version = "*"}
 passlib = {extras = ["bcrypt"], version = "*"}
 alembic = "*"
+psycopg2 = "*"
 
 [dev-packages]
 pytest = "*"

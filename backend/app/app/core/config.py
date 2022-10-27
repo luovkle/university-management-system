@@ -1,3 +1,4 @@
+import os
 import secrets
 
 from pydantic import BaseSettings
@@ -44,7 +45,11 @@ class Settings(BaseSettings):
     HOMEWORK_DESCRIPTION_MAX_LENGTH: int = POST_CONTENT_MAX_LENGTH
 
     # DB
-    DB_URI: str = "sqlite:///app.db"
+    DB_USER: str = os.getenv("POSTGRES_USER", "")
+    DB_PASSWORD: str = os.getenv("POSTGRES_PASSWORD", "")
+    DB_SERVER: str = os.getenv("POSTGRES_SERVER", "")
+    DB_NAME: str = os.getenv("POSTGRES_DB", "")
+    DB_URI: str = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_SERVER}/{DB_NAME}"
 
 
 settings = Settings()

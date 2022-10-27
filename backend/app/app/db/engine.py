@@ -1,5 +1,5 @@
 from sqlmodel import create_engine
 
-connect_args = {"check_same_thread": False}
+from app.core.config import settings
 
-engine = create_engine("sqlite:///app.db", connect_args=connect_args)
+engine = create_engine(settings.DB_URI)
