@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     APP_TITLE: str = "University Management System"
     APP_LICENSE_NAME: str = "MIT"
     APP_LICENSE_URL: str = "https://opensource.org/licenses/MIT"
+    CORS_ORIGINS: str = os.getenv("CORS_ORIGINS", "")
 
     # Api
     API_V1_STR: str = "/api/v1"

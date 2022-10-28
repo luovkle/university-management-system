@@ -39,6 +39,22 @@ POSTGRES_SERVER=db
 POSTGRES_DB=app
 ```
 
+### CORS
+
+**Warning**: this parameter is not required and in fact if you are not a **javascript** user you may want to ignore it.
+
+#### Structure
+
+```txt
+CORS_ORIGINS="{HOST1} {HOST2} {...}"
+```
+
+#### Example
+
+```txt
+CORS_ORIGINS="http://localhost:3000 http://127.0.0.1:8080"
+```
+
 ## Running services
 
 ### Running for production
