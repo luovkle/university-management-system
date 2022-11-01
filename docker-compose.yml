@@ -23,8 +23,11 @@ services:
     restart: always
     ports:
       - 8000:8000
+    volumes:
+      - pictures:/app/pictures
     depends_on:
       - db
 
 volumes:
   db_data:
+  pictures:

@@ -52,5 +52,12 @@ class Settings(BaseSettings):
     DB_NAME: str = os.getenv("POSTGRES_DB", "")
     DB_URI: str = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_SERVER}/{DB_NAME}"
 
+    # Pictures
+    DEFAULT_PICTURE: str = "default_picture.png"
+    VALID_PICTURE_FORMATS: list[str] = ["JPEG", "PNG"]
+    PICTURE_OUTPUT_SIZE: list[int] = [800, 800]
+    PICTURE_OUTPUT_FORMAT: str = "PNG"
+    PICTURE_OUTPUT_DIRECTORY: str = "pictures"
+
 
 settings = Settings()
