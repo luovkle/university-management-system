@@ -10,6 +10,7 @@ from app.models import (
     CommentUpdate,
     User,
 )
+from app.models.message import MessageRead
 from app.utils import Prefix, Tag
 
 router = APIRouter(prefix=Prefix.comments, tags=[Tag.comments])
@@ -57,7 +58,7 @@ def update_comment(
     return db_comment
 
 
-@router.delete("/{id}")
+@router.delete("/{id}", response_model=MessageRead)
 def delete_comment(
     *,
     current_user: User = Depends(get_current_user),

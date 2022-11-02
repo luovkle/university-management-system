@@ -4,6 +4,7 @@ from sqlmodel import Session
 from app.api.deps import get_current_user, get_session
 from app.crud.post import crud_post
 from app.models import PostCreate, PostRead, PostReadWithComments, PostUpdate, User
+from app.models.message import MessageRead
 from app.utils import Prefix, Tag
 
 router = APIRouter(prefix=Prefix.posts, tags=[Tag.posts])
@@ -51,7 +52,7 @@ def update_post(
     return db_post
 
 
-@router.delete("/{id}")
+@router.delete("/{id}", response_model=MessageRead)
 def delete_post(
     *,
     current_user: User = Depends(get_current_user),
