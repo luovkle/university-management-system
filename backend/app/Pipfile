@@ -14,6 +14,8 @@ passlib = {extras = ["bcrypt"], version = "*"}
 alembic = "*"
 psycopg2 = "*"
 pillow = "*"
+celery = "*"
+redis = "*"
 
 [dev-packages]
 pytest = "*"
