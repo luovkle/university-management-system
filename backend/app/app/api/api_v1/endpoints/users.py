@@ -5,6 +5,7 @@ from app.api.deps import get_current_user, get_session
 from app.crud.user import crud_user
 from app.models import User, UserCreate, UserRead, UserReadWithProfile, UserUpdate
 from app.utils import Prefix, Tag
+from app.models.message import MessageRead
 
 router = APIRouter(prefix=Prefix.users, tags=[Tag.users])
 
@@ -44,7 +45,7 @@ def update_user(
     return db_user
 
 
-@router.delete("/me")
+@router.delete("/me", response_model=MessageRead)
 def delete_user(
     current_user: User = Depends(get_current_user),
     session: Session = Depends(get_session),
