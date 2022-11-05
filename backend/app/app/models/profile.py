@@ -19,6 +19,7 @@ class ProfileBase(SQLModel):
         min_length=settings.PROFILE_DESCRIPTION_MIN_LENGTH,
         max_length=settings.PROFILE_DESCRIPTION_MAX_LENGTH,
     )
+    picture: str = Field(default=settings.DEFAULT_PICTURE)
     user_id: int | None = Field(default=None, foreign_key="user.id")
 
 

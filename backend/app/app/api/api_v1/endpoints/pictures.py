@@ -13,6 +13,7 @@ router = APIRouter(prefix=Prefix.pictures, tags=[Tag.pictures])
 def upload_picture(
     current_user: User = Depends(get_current_user), picture: UploadFile = File()
 ):
+    profile_id = current_user.profile.id or 0
     temp_path = save_temp_picture(picture)
-    task = standardize_picture_task.delay(temp_path)
+    task = standardize_picture_task.delay(temp_path, profile_id)
     return {"task_id": task.id}

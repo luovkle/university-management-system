@@ -1,11 +1,26 @@
 import uuid
 
 from PIL import Image, UnidentifiedImageError
+from sqlmodel import Session
+from fastapi import HTTPException, status
 
 from app.core.config import settings
+from app.models import Profile
 
 
 class CRUDPicture:
+    def update(self, session: Session, profile_id: int, picture: str):
+        db_profile = session.get(Profile, profile_id)
+        if not db_profile:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="Profile not found"
+            )
+        db_profile.picture = picture
+        session.add(db_profile)
+        session.commit()
+        session.refresh(db_profile)
+        return db_profile
+
     def standardize(self, picture: str):
         try:
             image = Image.open(picture, mode="r")
