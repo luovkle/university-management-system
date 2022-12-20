@@ -44,7 +44,7 @@ services:
     env_file:
       - .env
     command: >
-      bash -c "alembic upgrade head &&
+      sh -c "alembic upgrade head &&
       uvicorn app.main:app --host 0.0.0.0"
     restart: always
     ports:

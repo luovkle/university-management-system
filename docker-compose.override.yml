@@ -5,7 +5,7 @@ services:
     environment:
       PYTHONDONTWRITEBYTECODE: 1
     command: >
-      bash -c "alembic upgrade head &&
+      sh -c "alembic upgrade head &&
       uvicorn app.main:app --host 0.0.0.0 --reload"
     volumes:
       - ./backend/app:/app
