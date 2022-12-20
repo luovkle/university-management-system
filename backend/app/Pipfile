@@ -12,7 +12,7 @@ sqlmodel = "*"
 python-jose = {extras = ["cryptography"], version = "*"}
 passlib = {extras = ["bcrypt"], version = "*"}
 alembic = "*"
-psycopg2 = "*"
+psycopg2-binary = "*"
 pillow = "*"
 celery = "*"
 redis = "*"
