@@ -25,6 +25,7 @@ black = "*"
 isort = "*"
 autoflake = "*"
 flake8 = "*"
+httpx = "*"
 
 [requires]
 python_version = "3.10"
