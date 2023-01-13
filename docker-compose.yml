@@ -68,6 +68,16 @@ services:
       - db
       - image_worker
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: frontend.dockerfile
+    restart: always
+    ports:
+      - 80:80
+    depends_on:
+      - app
+
 volumes:
   db_data:
   files:
