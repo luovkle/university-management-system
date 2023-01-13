@@ -9,3 +9,13 @@ services:
       uvicorn app.main:app --host 0.0.0.0 --reload"
     volumes:
       - ./backend/app:/app
+
+  frontend:
+    build:
+      context: ./frontend
+      target: builder
+    ports:
+      - 3000:5173
+    command: npx vite --host
+    volumes:
+      - ./frontend/app:/app
