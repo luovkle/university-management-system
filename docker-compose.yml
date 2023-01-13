@@ -23,7 +23,7 @@ services:
       - .env
     restart: always
     volumes:
-      - pictures:/app/pictures
+      - files:/app/files
     depends_on:
       - redis
 
@@ -34,6 +34,21 @@ services:
     restart: always
     ports:
       - 5555:5555
+    depends_on:
+      - celery
+
+  image_worker:
+    build:
+      context: ./backend
+      dockerfile: image_worker.dockerfile
+    env_file:
+      - .env
+    command: uvicorn app.main:app --host 0.0.0.0
+    restart: always
+    ports:
+      - 8001:8000
+    volumes:
+      - files:/app/files
     depends_on:
       - celery
 
@@ -49,12 +64,10 @@ services:
     restart: always
     ports:
       - 8000:8000
-    volumes:
-      - pictures:/app/pictures
     depends_on:
       - db
-      - celery
+      - image_worker
 
 volumes:
   db_data:
-  pictures:
+  files:

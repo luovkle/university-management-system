@@ -1,0 +1,25 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = "*"
+python-multipart = "*"
+uvicorn = {extras = ["standard"], version = "*"}
+pillow = "*"
+celery = "*"
+redis = "*"
+
+[dev-packages]
+pytest = "*"
+requests = "*"
+mypy = "*"
+black = "*"
+isort = "*"
+autoflake = "*"
+flake8 = "*"
+httpx = "*"
+
+[requires]
+python_version = "3.10"
